@@ -12,8 +12,8 @@ backend:
     deleteMedia: Видалено «{{path}}»
 local_backend: true
 locale: uk
-site_url: https://namedseen.com
-display_url: https://namedseen.com
+site_url: https://shop.namedseen.com
+display_url: https://shop.namedseen.com
 media_folder: src/img/uploads
 public_folder: /img/uploads
 slug:

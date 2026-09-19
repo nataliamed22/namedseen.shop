@@ -2,10 +2,10 @@
   "brand": "Named & Seen",
   "site_title": "Named & Seen — Wedding Website Templates",
   "seo_description": "Editorial wedding website templates with built-in RSVP, countdown and guest details. Edit in Canva, publish the same evening.",
-  "url": "https://namedseen.com",
+  "url": "https://shop.namedseen.com",
   "email": "hello@namedseen.com",
   "instagram": "namedseen",
-  "studio_url": "https://nataliamed.com",
+  "studio_url": "https://namedseen.com",
   "footer_text": "Wedding website templates, designed in France, made for couples anywhere.",
   "legal_name": "",
   "legal_address": "",
@@ -29,22 +29,26 @@
       "url": "/#bespoke"
     },
     {
+      "label": "About",
+      "url": "/about/"
+    },
+    {
       "label": "FAQ",
       "url": "/#faq"
     }
   ],
   "theme": {
-    "background": "#F5F1EA",
-    "surface": "#FFFCF7",
-    "surface_alt": "#EFE8DD",
+    "background": "#FBFAF7",
+    "surface": "#FFFFFF",
+    "surface_alt": "#F4F1EC",
     "text": "#17120F",
     "text_soft": "#4A3F38",
     "muted": "#7C6D61",
-    "lines": "#DFD4C4",
-    "lines_soft": "#EBE2D5",
+    "lines": "#E7E2D9",
+    "lines_soft": "#F0ECE5",
     "accent": "#5C1A1B",
     "accent_dark": "#3E1013",
-    "accent_wash": "#F0E4E2",
+    "accent_wash": "#F5ECEA",
     "gold": "#9A7B4F"
   },
   "fonts": {
