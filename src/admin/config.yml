@@ -1,7 +1,7 @@
 # Згенеровано з tools/cms-config.src.yml — редагуй той файл і запусти tools/build-cms-config.py
 backend:
   name: github
-  repo: OWNER/namedseen
+  repo: nataliamed22/namedseen.shop
   branch: main
   base_url: https://api.netlify.com
   commit_messages:
