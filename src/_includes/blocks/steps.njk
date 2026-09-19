@@ -1,0 +1,14 @@
+<section{% if block.anchor %} id="{{ block.anchor }}"{% endif %}>
+  <div class="wrap">
+    {% include "blocks/_head.njk" %}
+    <div class="steps">
+      {% for s in block.steps %}
+      <div class="step">
+        <span class="n">Step {{ "0" if loop.index < 10 }}{{ loop.index }}</span>
+        <h3>{{ s.title }}</h3>
+        <p>{{ s.text }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>

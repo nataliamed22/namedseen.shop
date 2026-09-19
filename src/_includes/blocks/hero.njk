@@ -1,0 +1,14 @@
+<div class="wrap hero"{% if block.anchor %} id="{{ block.anchor }}"{% endif %}>
+  <div class="hero-grid">
+    <div>
+      {% if block.eyebrow %}<div class="label">{{ block.eyebrow }}</div>{% endif %}
+      <h1 class="display">{{ block.title | accent | safe }}</h1>
+      {% if block.text %}<p class="lede">{{ block.text }}</p>{% endif %}
+      <div class="acts">
+        {% if block.button_label %}<a href="{{ block.button_url }}" class="btn solid">{{ block.button_label }}</a>{% endif %}
+        {% if block.button2_label %}<a href="{{ block.button2_url }}" class="btn ghost"{% if "http" in block.button2_url %} target="_blank" rel="noopener"{% endif %}>{{ block.button2_label }}</a>{% endif %}
+      </div>
+    </div>
+    {% if block.image %}<div class="frame hero-frame{{ block.ratio | ratioClass }}"{{ block.ratio | ratio | safe }}><img src="{{ block.image }}" alt="{{ block.image_alt }}"></div>{% endif %}
+  </div>
+</div>

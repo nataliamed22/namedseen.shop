@@ -1,0 +1,9 @@
+---
+layout: base.njk
+---
+{%- set product = collections.products | bySlug(page.fileSlug) -%}
+{%- if not product -%}{%- set product = { data: { title: title, collection: collection, format: format, status: status, price: price, summary: summary, cover: cover, gallery: gallery, includes: includes, demo_url: demo_url, pay_url: pay_url, tagline: tagline, swatches: swatches }, url: page.url, fileSlug: page.fileSlug } -%}{%- endif -%}
+{%- set pageBlocks = blocks if (blocks and blocks.length) else productDefaults.blocks -%}
+{%- set blocks = pageBlocks -%}
+{%- set productBody = content -%}
+{% include "blocks-loop.njk" %}

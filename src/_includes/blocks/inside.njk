@@ -1,0 +1,10 @@
+<section{% if block.anchor %} id="{{ block.anchor }}"{% endif %}>
+  <div class="wrap">
+    <div class="included-wrap">
+      {% if block.eyebrow %}<div class="label">{{ block.eyebrow }}</div>{% endif %}
+      <h2 class="display">{{ block.title | accent | safe }}</h2>
+      {% if block.text %}<p>{{ block.text }}</p>{% endif %}
+      <ul class="included">{% for i in block.items %}<li>{{ i }}</li>{% endfor %}</ul>
+    </div>
+  </div>
+</section>

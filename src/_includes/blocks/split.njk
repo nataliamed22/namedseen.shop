@@ -1,0 +1,13 @@
+<section{% if block.anchor %} id="{{ block.anchor }}"{% endif %}>
+  <div class="wrap">
+    <div class="split{% if block.flip %} flip{% endif %}">
+      <div class="frame{{ block.ratio | ratioClass }}"{{ block.ratio | ratio | safe }}><img src="{{ block.image }}" alt="{{ block.alt }}" loading="lazy"></div>
+      <div>
+        {% if block.eyebrow %}<div class="label">{{ block.eyebrow }}</div>{% endif %}
+        {% if block.title %}<h2 class="display" style="font-size:clamp(28px,4vw,44px);margin:14px 0 16px">{{ block.title | accent | safe }}</h2>{% endif %}
+        {% if block.body %}<div class="prose">{{ block.body | fill(settings) | md | safe }}</div>{% endif %}
+        {% if block.button_label %}<p style="margin-top:24px"><a href="{{ block.button_url }}" class="btn solid">{{ block.button_label }}</a></p>{% endif %}
+      </div>
+    </div>
+  </div>
+</section>

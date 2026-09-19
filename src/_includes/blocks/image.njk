@@ -1,0 +1,9 @@
+<section{% if block.anchor %} id="{{ block.anchor }}"{% endif %}>
+  <div class="wrap">
+    {% if block.title %}{% include "blocks/_head.njk" %}{% endif %}
+    <figure class="img-block{% if block.full %} full{% endif %}{% if block.center %} align-center{% endif %}">
+      <div class="frame{{ block.ratio | ratioClass }}"{{ block.ratio | ratio | safe }}><img src="{{ block.image }}" alt="{{ block.alt }}" loading="lazy"></div>
+      {% if block.caption %}<figcaption>{{ block.caption }}</figcaption>{% endif %}
+    </figure>
+  </div>
+</section>

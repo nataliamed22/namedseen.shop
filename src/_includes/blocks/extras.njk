@@ -1,0 +1,17 @@
+<div class="wrap" style="padding-bottom:clamp(48px,6vw,80px)">
+  <div class="pair">
+    {% for it in block.items %}
+    <div class="mini{% if it.highlight %} suite{% endif %}">
+      <div class="label">{{ it.eyebrow }}</div>
+      <h3>{{ it.title }}</h3>
+      <p>{{ it.text }}</p>
+      <div class="pricing"><span class="now">{{ it.price | euro }}</span></div>
+      {% if it.status == "available" and it.pay_url %}
+      <a href="{{ it.pay_url }}" class="btn solid">Buy now</a>
+      {% else %}
+      <a href="mailto:{{ settings.email }}?subject={{ ('Tell me when ' + it.title + ' opens') | urlencode }}" class="btn ghost">Coming soon · tell me →</a>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+</div>

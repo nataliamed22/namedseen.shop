@@ -1,0 +1,16 @@
+{% if block.items and block.items.length %}
+<section{% if block.anchor %} id="{{ block.anchor }}"{% endif %}>
+  <div class="wrap">
+    {% set center = true %}{% include "blocks/_head.njk" %}{% set center = false %}
+    <div class="revs">
+      {% for r in block.items %}
+      <div class="rev">
+        <div class="stars">{% for i in range(0, r.stars or 5) %}★{% endfor %}</div>
+        <q>{{ r.quote }}</q>
+        <div class="who">{{ r.name }}{% if r.when %} · {{ r.when }}{% endif %}</div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}

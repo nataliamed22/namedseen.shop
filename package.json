@@ -1,0 +1,18 @@
+{
+  "name": "namedseen",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "build": "eleventy",
+    "start": "eleventy --serve",
+    "cms": "npx decap-server"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@11ty/eleventy": "^3.1.6",
+    "markdown-it": "^15.0.2"
+  },
+  "type": "module"
+}

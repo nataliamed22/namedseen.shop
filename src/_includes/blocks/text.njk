@@ -1,0 +1,6 @@
+<section{% if block.anchor %} id="{{ block.anchor }}"{% endif %}>
+  <div class="wrap{% if block.center %} align-center{% endif %}">
+    {% set center = block.center %}{% include "blocks/_head.njk" %}{% set center = false %}
+    {% if block.body %}<div class="prose{% if block.center %} align-center{% endif %}">{{ block.body | fill(settings) | md | safe }}</div>{% endif %}
+  </div>
+</section>

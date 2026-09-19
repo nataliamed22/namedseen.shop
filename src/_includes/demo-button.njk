@@ -1,0 +1,5 @@
+{%- if p.data.demo_url -%}
+<a href="{{ p.data.demo_url }}" target="_blank" rel="noopener" class="btn ghost">View demo</a>
+{%- else -%}
+<span class="btn ghost" aria-disabled="true">Demo soon</span>
+{%- endif -%}

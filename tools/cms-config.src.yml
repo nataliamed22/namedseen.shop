@@ -1,0 +1,546 @@
+# ─────────────────────────────────────────────────────────────
+#  Named & Seen — адмінка сайту (Decap CMS)
+#  Після створення репозиторію на GitHub заміни OWNER на свій логін.
+# ─────────────────────────────────────────────────────────────
+backend:
+  name: github
+  repo: OWNER/namedseen
+  branch: main
+  base_url: https://api.netlify.com
+  commit_messages:
+    create: "Додано: {{collection}} «{{slug}}»"
+    update: "Оновлено: {{collection}} «{{slug}}»"
+    delete: "Видалено: {{collection}} «{{slug}}»"
+    uploadMedia: "Завантажено «{{path}}»"
+    deleteMedia: "Видалено «{{path}}»"
+
+# дозволяє тестувати адмінку локально (npm run cms)
+local_backend: true
+
+locale: uk
+site_url: https://namedseen.com
+display_url: https://namedseen.com
+media_folder: src/img/uploads
+public_folder: /img/uploads
+slug:
+  encoding: ascii
+  clean_accents: true
+  sanitize_replacement: "-"
+
+# ───────────── спільні поля для блоків ─────────────
+_common_hidden: &common_hidden { label: "Сховати блок", name: hidden, widget: boolean, default: false, required: false }
+_common_animate: &common_animate { label: "Анімація при прокрутці", name: animate, widget: boolean, default: true, required: false }
+_common_anchor: &common_anchor { label: "Якір (для посилань #…)", name: anchor, widget: string, required: false, hint: "Наприклад faq — кнопка з посиланням #faq прокрутить сюди" }
+
+
+_ratio: &ratio
+  label: "Формат картинки"
+  name: ratio
+  widget: select
+  required: false
+  default: "default"
+  options:
+    - { label: "Як задумано в дизайні", value: "default" }
+    - { label: "Квадрат 1:1", value: "1/1" }
+    - { label: "Вертикальна 4:5", value: "4/5" }
+    - { label: "Вертикальна 3:4", value: "3/4" }
+    - { label: "Висока 2:3", value: "2/3" }
+    - { label: "Горизонтальна 4:3", value: "4/3" }
+    - { label: "Горизонтальна 3:2", value: "3/2" }
+    - { label: "Широка 16:9", value: "16/9" }
+    - { label: "Оригінальна, без обрізання", value: "original" }
+
+_head: &head
+  - { label: "Надпис над заголовком", name: eyebrow, widget: string, required: false }
+  - { label: "Заголовок", name: title, widget: string, required: false, hint: "Слово в *зірочках* стане курсивом у кольорі акценту" }
+  - { label: "Текст", name: text, widget: text, required: false }
+
+# ───────────── бібліотека блоків ─────────────
+_blocks: &blocks
+  - label: "Hero — перший екран"
+    name: hero
+    widget: object
+    summary: "Hero · {{fields.title}}"
+    fields:
+      - { label: "Надпис над заголовком", name: eyebrow, widget: string, required: false }
+      - { label: "Заголовок", name: title, widget: text, hint: "Новий рядок = перенос. *Слово* = курсив акцентом" }
+      - { label: "Текст", name: text, widget: text, required: false }
+      - { label: "Картинка", name: image, widget: image, required: false }
+      - { label: "Опис картинки (для Google)", name: image_alt, widget: string, required: false }
+      - *ratio
+      - { label: "Кнопка 1 — текст", name: button_label, widget: string, required: false }
+      - { label: "Кнопка 1 — посилання", name: button_url, widget: string, required: false }
+      - { label: "Кнопка 2 — текст", name: button2_label, widget: string, required: false }
+      - { label: "Кнопка 2 — посилання", name: button2_url, widget: string, required: false }
+      - *common_hidden
+      - *common_animate
+      - *common_anchor
+
+  - label: "Заголовок сторінки"
+    name: page_head
+    widget: object
+    summary: "Заголовок · {{fields.title}}"
+    fields:
+      - { label: "Надпис над заголовком", name: eyebrow, widget: string, required: false }
+      - { label: "Заголовок", name: title, widget: string }
+      - { label: "Текст", name: text, widget: text, required: false }
+      - { label: "По центру", name: center, widget: boolean, default: false, required: false }
+      - *common_hidden
+      - *common_animate
+      - *common_anchor
+
+  - label: "Цифри в рядок (довіра)"
+    name: trust
+    widget: object
+    summary: "Цифри"
+    fields:
+      - label: "Пункти"
+        name: items
+        widget: list
+        summary: "{{fields.number}} — {{fields.text}}"
+        fields:
+          - { label: "Велике", name: number, widget: string }
+          - { label: "Підпис", name: text, widget: string }
+      - *common_hidden
+      - *common_animate
+      - *common_anchor
+
+  - label: "Колекції (картки)"
+    name: collections
+    widget: object
+    summary: "Колекції · {{fields.title}}"
+    fields:
+      - { label: "Надпис над заголовком", name: eyebrow, widget: string, required: false }
+      - { label: "Заголовок", name: title, widget: string, required: false }
+      - { label: "Текст", name: text, widget: text, required: false }
+      - *ratio
+      - *common_hidden
+      - *common_animate
+      - *common_anchor
+
+  - label: "Шаблони (головний + інші + скоро)"
+    name: templates
+    widget: object
+    summary: "Шаблони · {{fields.title}}"
+    fields:
+      - { label: "Надпис над заголовком", name: eyebrow, widget: string, required: false }
+      - { label: "Заголовок", name: title, widget: string, required: false }
+      - { label: "Текст", name: text, widget: text, required: false }
+      - { label: "Заголовок «Скоро»", name: soon_title, widget: string, required: false }
+      - { label: "Надпис біля «Скоро»", name: soon_eyebrow, widget: string, required: false }
+      - { <<: *ratio, label: "Формат карток шаблонів", name: ratio_cards }
+      - { <<: *ratio, label: "Формат карток «Скоро»", name: ratio_soon }
+      - *common_hidden
+      - *common_animate
+      - *common_anchor
+
+  - label: "Додаткові пропозиції (Note, Suite)"
+    name: extras
+    widget: object
+    summary: "Пропозиції"
+    fields:
+      - label: "Пропозиції"
+        name: items
+        widget: list
+        summary: "{{fields.title}} · €{{fields.price}}"
+        fields:
+          - { label: "Надпис", name: eyebrow, widget: string, required: false }
+          - { label: "Назва", name: title, widget: string }
+          - { label: "Опис", name: text, widget: text, required: false }
+          - { label: "Ціна, €", name: price, widget: number, value_type: float }
+          - { label: "Статус", name: status, widget: select, options: [{ label: "Продається", value: available }, { label: "Скоро", value: soon }], default: soon }
+          - { label: "Посилання на оплату", name: pay_url, widget: string, required: false }
+          - { label: "Виділити рамкою", name: highlight, widget: boolean, default: false, required: false }
+      - *common_hidden
+      - *common_animate
+      - *common_anchor
+
+  - label: "Порівняння (таблиця)"
+    name: comparison
+    widget: object
+    summary: "Порівняння · {{fields.title}}"
+    fields:
+      - { label: "Надпис над заголовком", name: eyebrow, widget: string, required: false }
+      - { label: "Заголовок", name: title, widget: string, required: false }
+      - { label: "Текст", name: text, widget: text, required: false }
+      - { label: "Колонка: ми", name: col_us, widget: string }
+      - { label: "Колонка 2", name: col_a, widget: string }
+      - { label: "Колонка 3", name: col_b, widget: string }
+      - label: "Рядки"
+        name: rows
+        widget: list
+        summary: "{{fields.label}}"
+        fields:
+          - { label: "Назва рядка", name: label, widget: string }
+          - { label: "Ми", name: us, widget: string }
+          - { label: "Колонка 2", name: a, widget: string }
+          - { label: "Колонка 3", name: b, widget: string }
+      - *common_hidden
+      - *common_animate
+      - *common_anchor
+
+  - label: "Кроки"
+    name: steps
+    widget: object
+    summary: "Кроки · {{fields.title}}"
+    fields:
+      - { label: "Надпис над заголовком", name: eyebrow, widget: string, required: false }
+      - { label: "Заголовок", name: title, widget: string, required: false }
+      - label: "Кроки"
+        name: steps
+        widget: list
+        summary: "{{fields.title}}"
+        fields:
+          - { label: "Назва", name: title, widget: string }
+          - { label: "Текст", name: text, widget: text }
+      - *common_hidden
+      - *common_animate
+      - *common_anchor
+
+  - label: "Що входить (список у рамці)"
+    name: inside
+    widget: object
+    summary: "Що входить · {{fields.title}}"
+    fields:
+      - { label: "Надпис над заголовком", name: eyebrow, widget: string, required: false }
+      - { label: "Заголовок", name: title, widget: string, required: false }
+      - { label: "Текст", name: text, widget: text, required: false }
+      - { label: "Пункти", name: items, widget: list, field: { label: "Пункт", name: item, widget: string } }
+      - *common_hidden
+      - *common_animate
+      - *common_anchor
+
+  - label: "Кольорова смуга з кнопкою"
+    name: band
+    widget: object
+    summary: "Смуга · {{fields.title}}"
+    fields:
+      - { label: "Надпис над заголовком", name: eyebrow, widget: string, required: false }
+      - { label: "Заголовок", name: title, widget: string }
+      - { label: "Текст", name: text, widget: text, required: false }
+      - { label: "Кнопка — текст", name: button_label, widget: string, required: false }
+      - { label: "Кнопка — посилання", name: button_url, widget: string, required: false }
+      - *common_hidden
+      - *common_animate
+      - *common_anchor
+
+  - label: "Текст"
+    name: text
+    widget: object
+    summary: "Текст · {{fields.title}}"
+    fields:
+      - { label: "Надпис над заголовком", name: eyebrow, widget: string, required: false }
+      - { label: "Заголовок", name: title, widget: string, required: false }
+      - { label: "Текст", name: body, widget: markdown, required: false, buttons: [bold, italic, link, heading-two, heading-three, bulleted-list, numbered-list, quote], editor_components: [] }
+      - { label: "По центру", name: center, widget: boolean, default: false, required: false }
+      - *common_hidden
+      - *common_animate
+      - *common_anchor
+
+  - label: "Картинка"
+    name: image
+    widget: object
+    summary: "Картинка · {{fields.caption}}"
+    fields:
+      - { label: "Заголовок над картинкою", name: title, widget: string, required: false }
+      - { label: "Картинка", name: image, widget: image }
+      - { label: "Опис (для Google)", name: alt, widget: string, required: false }
+      - *ratio
+      - { label: "Підпис", name: caption, widget: string, required: false }
+      - { label: "На всю ширину", name: full, widget: boolean, default: false, required: false }
+      - { label: "По центру", name: center, widget: boolean, default: false, required: false }
+      - *common_hidden
+      - *common_animate
+      - *common_anchor
+
+  - label: "Картинка + текст поруч"
+    name: split
+    widget: object
+    summary: "Картинка + текст · {{fields.title}}"
+    fields:
+      - { label: "Картинка", name: image, widget: image }
+      - { label: "Опис (для Google)", name: alt, widget: string, required: false }
+      - *ratio
+      - { label: "Картинка справа", name: flip, widget: boolean, default: false, required: false }
+      - { label: "Надпис над заголовком", name: eyebrow, widget: string, required: false }
+      - { label: "Заголовок", name: title, widget: string, required: false }
+      - { label: "Текст", name: body, widget: markdown, required: false, buttons: [bold, italic, link, bulleted-list], editor_components: [] }
+      - { label: "Кнопка — текст", name: button_label, widget: string, required: false }
+      - { label: "Кнопка — посилання", name: button_url, widget: string, required: false }
+      - *common_hidden
+      - *common_animate
+      - *common_anchor
+
+  - label: "Відгуки"
+    name: reviews
+    widget: object
+    summary: "Відгуки · {{fields.title}}"
+    fields:
+      - { label: "Надпис над заголовком", name: eyebrow, widget: string, required: false }
+      - { label: "Заголовок", name: title, widget: string, required: false }
+      - { label: "Текст", name: text, widget: text, required: false }
+      - label: "Відгуки (блок не показується, поки список порожній)"
+        name: items
+        widget: list
+        required: false
+        summary: "{{fields.name}}"
+        fields:
+          - { label: "Текст відгуку", name: quote, widget: text }
+          - { label: "Ім'я", name: name, widget: string }
+          - { label: "Коли", name: when, widget: string, required: false }
+          - { label: "Зірок", name: stars, widget: number, default: 5, min: 1, max: 5 }
+      - *common_hidden
+      - *common_animate
+      - *common_anchor
+
+  - label: "Послуги з цінами (Bespoke)"
+    name: bespoke
+    widget: object
+    summary: "Послуги · {{fields.title}}"
+    fields:
+      - { label: "Надпис над заголовком", name: eyebrow, widget: string, required: false }
+      - { label: "Заголовок", name: title, widget: string, required: false }
+      - { label: "Текст", name: text, widget: text, required: false }
+      - label: "Послуги"
+        name: services
+        widget: list
+        summary: "{{fields.name}} · {{fields.price}}"
+        fields:
+          - { label: "Назва", name: name, widget: string }
+          - { label: "Опис", name: text, widget: string }
+          - { label: "Ціна", name: price, widget: string }
+      - { label: "Кнопка — текст", name: button_label, widget: string, required: false }
+      - *common_hidden
+      - *common_animate
+      - *common_anchor
+
+  - label: "Питання й відповіді (FAQ)"
+    name: faq
+    widget: object
+    summary: "FAQ · {{fields.title}}"
+    fields:
+      - { label: "Надпис над заголовком", name: eyebrow, widget: string, required: false }
+      - { label: "Заголовок", name: title, widget: string, required: false }
+      - label: "Питання"
+        name: items
+        widget: list
+        summary: "{{fields.q}}"
+        fields:
+          - { label: "Питання", name: q, widget: string }
+          - { label: "Відповідь", name: a, widget: text }
+      - *common_hidden
+      - *common_animate
+      - *common_anchor
+
+  - label: "Фінал з кнопкою"
+    name: closing
+    widget: object
+    summary: "Фінал · {{fields.title}}"
+    fields:
+      - { label: "Надпис над заголовком", name: eyebrow, widget: string, required: false }
+      - { label: "Заголовок", name: title, widget: string }
+      - { label: "Текст", name: text, widget: text, required: false }
+      - { label: "Кнопка — текст", name: button_label, widget: string, required: false }
+      - { label: "Кнопка — посилання", name: button_url, widget: string, required: false }
+      - *common_hidden
+      - *common_animate
+      - *common_anchor
+
+  - label: "Відступ"
+    name: spacer
+    widget: object
+    summary: "Відступ {{fields.height}}px"
+    fields:
+      - { label: "Висота, px", name: height, widget: number, default: 48, min: 0, max: 400 }
+      - *common_hidden
+
+_product_blocks: &product_blocks
+  - label: "Товар: галерея, ціна, кнопки"
+    name: product_hero
+    widget: object
+    summary: "Галерея й ціна"
+    fields:
+      - *ratio
+      - *common_hidden
+      - *common_animate
+  - label: "Товар: опис колекції"
+    name: product_about
+    widget: object
+    summary: "Опис · {{fields.title}}"
+    fields:
+      - { label: "Заголовок", name: title, widget: string, required: false }
+      - *common_hidden
+      - *common_animate
+  - label: "Товар: смуга з живим демо"
+    name: product_demo
+    widget: object
+    summary: "Демо · {{fields.title}}"
+    fields:
+      - { label: "Надпис над заголовком", name: eyebrow, widget: string, required: false }
+      - { label: "Заголовок", name: title, widget: string }
+      - { label: "Текст", name: text, widget: text, required: false }
+      - { label: "Кнопка — текст", name: button_label, widget: string, required: false }
+      - *common_hidden
+      - *common_animate
+  - label: "Товар: інші шаблони"
+    name: related
+    widget: object
+    summary: "Інші шаблони"
+    fields:
+      - { label: "Заголовок", name: title, widget: string, required: false }
+      - *ratio
+      - *common_hidden
+      - *common_animate
+
+# ───────────── розділи адмінки ─────────────
+collections:
+  - name: pages
+    label: "Сторінки"
+    label_singular: "Сторінку"
+    description: "Головна, оферта, повернення, контакти й будь-які нові сторінки. Відкрий сторінку → меню «⋯» → Duplicate, щоб зробити копію."
+    folder: src/pages
+    create: true
+    extension: md
+    format: frontmatter
+    slug: "{{slug}}"
+    preview_path: "{{slug}}"
+    summary: "{{title}}"
+    fields:
+      - { label: "Назва сторінки", name: title, widget: string }
+      - { label: "Опис для Google", name: description, widget: text, required: false }
+      - { label: "Це головна сторінка", name: isHome, widget: hidden, required: false }
+      - { label: "Адреса", name: permalink, widget: hidden, required: false }
+      - label: "Блоки сторінки"
+        name: blocks
+        widget: list
+        hint: "Додавай блоки кнопкою «Add», перетягуй за ручку, щоб поміняти порядок"
+        types: *blocks
+
+  - name: templates
+    label: "Шаблони (товари)"
+    label_singular: "Шаблон"
+    description: "Кожен шаблон — окремий товар: з'являється на головній, має свою сторінку і сторінку «Дякуємо»."
+    folder: src/templates
+    create: true
+    extension: md
+    format: frontmatter
+    slug: "{{fields.collection}}"
+    preview_path: "templates/{{slug}}"
+    summary: "{{title}} · {{status}} · €{{price}}"
+    sortable_fields: [order, title, status]
+    fields:
+      - { label: "Назва товару", name: title, widget: string, hint: "Наприклад The Trianon Letter" }
+      - { label: "Колекція", name: collection, widget: string, hint: "Одне слово: Trianon. З нього ж буде адреса сторінки" }
+      - { label: "Формат", name: format, widget: select, options: ["Wedding website", "Save the date", "Suite"], default: "Wedding website" }
+      - label: "Статус"
+        name: status
+        widget: select
+        default: soon
+        options:
+          - { label: "Продається", value: available }
+          - { label: "Скоро", value: soon }
+          - { label: "Прихований", value: hidden }
+      - { label: "Головний на сайті (велика картка)", name: featured, widget: boolean, default: false, required: false }
+      - { label: "Порядок", name: order, widget: number, default: 10, value_type: int, hint: "Менше число — вище" }
+      - { label: "Ціна, €", name: price, widget: number, default: 24, value_type: float }
+      - { label: "Коротко про настрій", name: tagline, widget: string, hint: "Одне речення під назвою колекції" }
+      - { label: "Опис для картки", name: summary, widget: text, required: false }
+      - { label: "Обкладинка", name: cover, widget: image }
+      - { label: "Галерея", name: gallery, widget: list, required: false, field: { label: "Картинка", name: image, widget: image } }
+      - { label: "Кольори палітри", name: swatches, widget: list, required: false, field: { label: "Колір", name: color, widget: color } }
+      - { label: "Що входить", name: includes, widget: list, required: false, field: { label: "Пункт", name: item, widget: string } }
+      - { label: "Посилання на живе демо", name: demo_url, widget: string, required: false }
+      - { label: "Посилання на оплату (WayForPay)", name: pay_url, widget: string, required: false }
+      - { label: "Canva template link (бачить лише покупець)", name: template_link, widget: string, required: false }
+      - { label: "PDF-гайд для покупця", name: guide_pdf, widget: file, required: false, media_folder: /src/files, public_folder: /files }
+      - { label: "Опис колекції (довгий)", name: body, widget: markdown, required: false, buttons: [bold, italic, link, bulleted-list], editor_components: [] }
+      - label: "Свої блоки сторінки товару (порожньо = стандартна сторінка)"
+        name: blocks
+        widget: list
+        required: false
+        types: [*product_blocks, *blocks]
+
+  - name: settings
+    label: "Налаштування сайту"
+    editor:
+      preview: true
+    files:
+      - name: site
+        label: "Кольори, шрифти, анімація, контакти"
+        file: src/_data/settings.json
+        fields:
+          - label: "Кольори"
+            name: theme
+            widget: object
+            collapsed: false
+            fields:
+              - { label: "Фон сайту", name: background, widget: color }
+              - { label: "Фон карток", name: surface, widget: color }
+              - { label: "Фон підказок і наведення", name: surface_alt, widget: color }
+              - { label: "Основний текст", name: text, widget: color }
+              - { label: "М'який текст", name: text_soft, widget: color }
+              - { label: "Приглушений текст, підписи", name: muted, widget: color }
+              - { label: "Лінії й рамки", name: lines, widget: color }
+              - { label: "Тонкі лінії", name: lines_soft, widget: color }
+              - { label: "Акцент (кнопки, смуга)", name: accent, widget: color }
+              - { label: "Акцент при наведенні", name: accent_dark, widget: color }
+              - { label: "Світлий акцент", name: accent_wash, widget: color }
+              - { label: "Золото (зірки)", name: gold, widget: color }
+          - label: "Шрифти"
+            name: fonts
+            widget: object
+            collapsed: false
+            fields:
+              - { label: "Заголовки", name: display, widget: select, options: ["Italiana", "Cormorant Garamond", "Playfair Display", "Bodoni Moda", "Cinzel", "Gilda Display", "Marcellus"] }
+              - { label: "Основний текст", name: body, widget: select, options: ["Cormorant Garamond", "EB Garamond", "Lora", "Libre Baskerville", "Playfair Display"] }
+              - { label: "Кнопки й дрібні підписи", name: ui, widget: select, options: ["Jost", "Montserrat", "Josefin Sans", "Lato"] }
+              - { label: "Розмір основного тексту, px", name: base_size, widget: number, min: 14, max: 22, default: 18 }
+          - label: "Анімація"
+            name: animation
+            widget: object
+            collapsed: false
+            fields:
+              - label: "Стиль"
+                name: style
+                widget: select
+                options:
+                  - { label: "Без анімації", value: none }
+                  - { label: "Проявлення", value: fade }
+                  - { label: "Підйом знизу", value: rise }
+                  - { label: "Легке наближення", value: zoom }
+                  - { label: "Виїзд збоку", value: slide }
+              - label: "Швидкість"
+                name: speed
+                widget: select
+                options:
+                  - { label: "Повільно", value: slow }
+                  - { label: "Звичайно", value: normal }
+                  - { label: "Швидко", value: fast }
+          - { label: "Назва бренду", name: brand, widget: string }
+          - { label: "Заголовок сайту в Google", name: site_title, widget: string }
+          - { label: "Опис сайту в Google", name: seo_description, widget: text }
+          - { label: "Адреса сайту", name: url, widget: string }
+          - { label: "Пошта", name: email, widget: string }
+          - { label: "Instagram (без @)", name: instagram, widget: string, required: false }
+          - { label: "Сайт студії", name: studio_url, widget: string, required: false }
+          - { label: "Текст у футері", name: footer_text, widget: text }
+          - { label: "Реквізити: ім'я ФОП", name: legal_name, widget: string, required: false }
+          - { label: "Реквізити: адреса", name: legal_address, widget: string, required: false }
+          - { label: "Реквізити: код / номер", name: legal_id, widget: string, required: false }
+          - { label: "Шаблон у нижній панелі на телефоні", name: mobile_bar_template, widget: relation, collection: templates, value_field: "{{slug}}", search_fields: [title, collection], display_fields: [title] }
+          - label: "Меню"
+            name: nav
+            widget: list
+            summary: "{{fields.label}} → {{fields.url}}"
+            fields:
+              - { label: "Назва", name: label, widget: string }
+              - { label: "Посилання", name: url, widget: string, hint: "/#faq — до блоку на головній, /terms/ — на сторінку" }
+
+      - name: product_defaults
+        label: "Стандартна сторінка товару"
+        file: src/_data/productDefaults.json
+        fields:
+          - label: "Блоки (для товарів без своїх блоків)"
+            name: blocks
+            widget: list
+            types: [*product_blocks, *blocks]

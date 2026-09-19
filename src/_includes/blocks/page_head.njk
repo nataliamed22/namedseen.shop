@@ -1,0 +1,5 @@
+<div class="wrap page-head{% if block.center %} align-center{% endif %}">
+  {% if block.eyebrow %}<div class="label">{{ block.eyebrow }}</div>{% endif %}
+  <h1 class="display">{{ block.title | accent | safe }}</h1>
+  {% if block.text %}<p{% if block.center %} class="align-center"{% endif %}>{{ block.text }}</p>{% endif %}
+</div>

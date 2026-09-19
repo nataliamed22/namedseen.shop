@@ -1,0 +1,8 @@
+{%- if productBody and productBody | trim -%}
+<section>
+  <div class="wrap">
+    {% include "blocks/_head.njk" %}
+    <div class="prose">{{ productBody | safe }}</div>
+  </div>
+</section>
+{%- endif -%}

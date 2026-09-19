@@ -1,0 +1,9 @@
+{%- if p.data.status == "available" -%}
+{%- if p.data.pay_url -%}
+<a href="{{ p.data.pay_url }}" class="btn solid{% if small %} sm{% endif %}">Buy now</a>
+{%- else -%}
+<a href="mailto:{{ settings.email }}?subject={{ ('I would like ' + p.data.title) | urlencode }}" class="btn solid{% if small %} sm{% endif %}">Buy now</a>
+{%- endif -%}
+{%- else -%}
+<a href="mailto:{{ settings.email }}?subject={{ ('Tell me when ' + p.data.title + ' opens') | urlencode }}" class="btn ghost{% if small %} sm{% endif %}">Coming soon · tell me</a>
+{%- endif -%}

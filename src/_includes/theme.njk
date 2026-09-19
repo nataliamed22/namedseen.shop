@@ -1,0 +1,15 @@
+{%- set t = settings.theme -%}
+{%- set f = settings.fonts -%}
+{%- set fams = [fonts[f.display], fonts[f.body], fonts[f.ui]] -%}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?{% for q in fams | unique %}{{ q }}{% if not loop.last %}&{% endif %}{% endfor %}&display=swap">
+<style>
+:root{
+  --ground:{{ t.background }};--surface:{{ t.surface }};--surface-2:{{ t.surface_alt }};
+  --ink:{{ t.text }};--ink-soft:{{ t.text_soft }};--muted:{{ t.muted }};
+  --line:{{ t.lines }};--line-soft:{{ t.lines_soft }};
+  --claret:{{ t.accent }};--claret-deep:{{ t.accent_dark }};--claret-wash:{{ t.accent_wash }};--gold:{{ t.gold }};
+  --font-display:"{{ f.display }}";--font-body:"{{ f.body }}";--font-ui:"{{ f.ui }}";
+  --anim-speed:{% if settings.animation.speed == "slow" %}1.4s{% elif settings.animation.speed == "fast" %}.5s{% else %}.9s{% endif %};
+}
+body{font-size:{{ f.base_size or 18 }}px}
+</style>

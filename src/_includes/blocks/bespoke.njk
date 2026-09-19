@@ -1,0 +1,15 @@
+<section{% if block.anchor %} id="{{ block.anchor }}"{% endif %}>
+  <div class="wrap">
+    {% include "blocks/_head.njk" %}
+    <div>
+      {% for s in block.services %}
+      <div class="svc-row">
+        <div class="name">{{ s.name }}</div>
+        <div class="desc">{{ s.text }}</div>
+        <div class="amt">{{ s.price }}</div>
+      </div>
+      {% endfor %}
+    </div>
+    {% if block.button_label %}<p style="margin-top:30px"><a href="mailto:{{ settings.email }}?subject={{ 'Bespoke wedding enquiry' | urlencode }}" class="btn ghost">{{ block.button_label }}</a></p>{% endif %}
+  </div>
+</section>

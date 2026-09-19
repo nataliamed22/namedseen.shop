@@ -1,0 +1,14 @@
+{
+  "blocks": [
+    { "type": "product_hero", "ratio": "4/3" },
+    { "type": "product_about", "title": "About this *collection*" },
+    { "type": "product_demo", "eyebrow": "No surprises", "title": "See it *live*", "text": "Open the demo on your phone, press the RSVP, scroll the whole thing. It is the template exactly as you will receive it.", "button_label": "Open the live demo →" },
+    { "type": "steps", "eyebrow": "From purchase to published", "title": "Four steps, *one evening*", "steps": [
+      { "title": "Buy the template", "text": "Pay by card or Apple Pay. Your Canva link and setup guide appear straight after checkout and land in your inbox." },
+      { "title": "Open it in Canva", "text": "One click makes your own editable copy. A free Canva account is all you need." },
+      { "title": "Make it yours", "text": "Swap names, dates, venue and photos. Every colour and font is already set." },
+      { "title": "Publish and share", "text": "Canva gives you a live link. Send it with your invitations and watch the RSVPs come in." }
+    ] },
+    { "type": "related", "title": "You might also *love*" }
+  ]
+}

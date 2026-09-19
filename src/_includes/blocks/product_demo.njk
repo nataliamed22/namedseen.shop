@@ -1,0 +1,10 @@
+{%- if product.data.demo_url -%}
+<div class="band">
+  <div class="wrap">
+    {% if block.eyebrow %}<div class="label">{{ block.eyebrow }}</div>{% endif %}
+    <h2 class="display">{{ block.title | accent | safe }}</h2>
+    {% if block.text %}<p>{{ block.text }}</p>{% endif %}
+    <a href="{{ product.data.demo_url }}" target="_blank" rel="noopener" class="btn">{{ block.button_label or "Open the live demo →" }}</a>
+  </div>
+</div>
+{%- endif -%}

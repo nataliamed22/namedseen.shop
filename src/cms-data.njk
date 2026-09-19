@@ -1,0 +1,13 @@
+---
+permalink: /admin/data.json
+eleventyExcludeFromCollections: true
+---
+{
+  "settings": {{ settings | json | safe }},
+  "fonts": {{ fonts | json | safe }},
+  "products": [
+    {%- for p in collections.products -%}
+    {{ { slug: p.fileSlug, url: p.url, title: p.data.title, collection: p.data.collection, format: p.data.format, status: p.data.status, featured: p.data.featured, price: p.data.price, tagline: p.data.tagline, summary: p.data.summary, cover: p.data.cover, swatches: p.data.swatches, includes: p.data.includes, demo_url: p.data.demo_url } | json | safe }}{% if not loop.last %},{% endif %}
+    {%- endfor -%}
+  ]
+}

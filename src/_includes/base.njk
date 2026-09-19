@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{% if title and not isHome %}{{ title }} · {{ settings.brand }}{% else %}{{ settings.site_title }}{% endif %}</title>
+<meta name="description" content="{{ description or settings.seo_description }}">
+<meta property="og:title" content="{% if title and not isHome %}{{ title }} · {{ settings.brand }}{% else %}{{ settings.site_title }}{% endif %}">
+<meta property="og:description" content="{{ description or settings.seo_description }}">
+<meta property="og:type" content="website">
+{% if ogImage %}<meta property="og:image" content="{{ settings.url }}{{ ogImage }}">{% endif %}
+{% if noindex %}<meta name="robots" content="noindex, nofollow">{% endif %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="/assets/site.css">
+{% include "theme.njk" %}
+</head>
+<body>
+<script>
+  (function () {
+    var style = "{{ settings.animation.style or 'none' }}";
+    if (style === "none" || !("IntersectionObserver" in window)) return;
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    var root = document.documentElement;
+    root.classList.add("anim-ready", "anim-" + style);
+    document.addEventListener("DOMContentLoaded", function () {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
+      }, { rootMargin: "0px 0px -8% 0px" });
+      document.querySelectorAll("[data-anim]").forEach(function (el) {
+        var r = el.getBoundingClientRect();
+        if (r.top < window.innerHeight) el.classList.add("in"); else io.observe(el);
+      });
+    });
+  })();
+</script>
+
+<header class="site">
+  <div class="wrap bar">
+    <a href="/" class="brand">{{ settings.brand }}</a>
+    <nav>
+      {% for item in settings.nav %}<a href="{{ item.url }}">{{ item.label }}</a>
+      {% endfor %}<a href="/#templates" class="btn ghost sm">Shop</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+{{ content | safe }}
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="cols">
+      <div class="about">
+        <span class="brand">{{ settings.brand }}</span>
+        <p>{{ settings.footer_text }}</p>
+      </div>
+      <div class="col">
+        <h4>Shop</h4>
+        <a href="/#collections">Collections</a>
+        <a href="/#templates">Templates</a>
+        <a href="/#bespoke">Bespoke</a>
+      </div>
+      <div class="col">
+        <h4>Help</h4>
+        <a href="/#how">How it works</a>
+        <a href="/#faq">FAQ</a>
+        <a href="/terms/">Terms of sale</a>
+        <a href="/refunds/">Refunds</a>
+      </div>
+      <div class="col">
+        <h4>Contact</h4>
+        {% if settings.instagram %}<a href="https://instagram.com/{{ settings.instagram }}" target="_blank" rel="noopener">Instagram</a>{% endif %}
+        {% if settings.studio_url %}<a href="{{ settings.studio_url }}" target="_blank" rel="noopener">Design studio</a>{% endif %}
+        <a href="mailto:{{ settings.email }}">{{ settings.email }}</a>
+        <a href="/contact/">Contact &amp; details</a>
+      </div>
+    </div>
+    <div class="legal">
+      <span>© {{ year }} {{ settings.brand }}</span>
+      <span><a href="/terms/">Terms</a> · <a href="/refunds/">Refunds</a> · <a href="/contact/">Contact</a></span>
+    </div>
+  </div>
+</footer>
+
+{% if isHome or isProduct %}{% set stickyProduct = collections.products | bySlug(page.fileSlug if isProduct else settings.mobile_bar_template) %}{% endif %}
+{% if stickyProduct and (isHome or isProduct) %}
+<div class="stickybuy">
+  <div class="p">
+    <b>{{ stickyProduct.data.price | euro }}</b>
+    <span>{{ stickyProduct.data.title }}</span>
+  </div>
+  {% set p = stickyProduct %}{% set small = true %}{% include "buy-button.njk" %}
+</div>
+<script>
+  (function () {
+    var sticky = document.querySelector(".stickybuy");
+    var foot = document.querySelector("footer.site");
+    if (!sticky || !foot || !("IntersectionObserver" in window)) return;
+    new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        sticky.style.transform = en.isIntersecting ? "translateY(120%)" : "translateY(0)";
+      });
+    }, { threshold: 0.05 }).observe(foot);
+  })();
+</script>
+{% endif %}
+</body>
+</html>

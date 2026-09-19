@@ -1,0 +1,10 @@
+{%- set featured = collections.products | where("featured", true) | first -%}
+{%- set available = collections.products | where("status", "available") -%}
+{%- set soon = collections.products | where("status", "soon") -%}
+{%- for block in blocks -%}
+{%- if not block.hidden -%}
+<div class="blk blk-{{ block.type }}"{% if block.animate != false %} data-anim{% endif %}>
+{%- include "blocks/" + block.type + ".njk" ignore missing -%}
+</div>
+{%- endif -%}
+{%- endfor -%}

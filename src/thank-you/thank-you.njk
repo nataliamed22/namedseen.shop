@@ -1,0 +1,26 @@
+---
+layout: base.njk
+pagination:
+  data: collections.products
+  size: 1
+  alias: p
+permalink: "/thank-you/{{ p.fileSlug }}/"
+noindex: true
+eleventyExcludeFromCollections: true
+eleventyComputed:
+  title: "Thank you — {{ p.data.title }}"
+---
+<div class="wrap ty">
+  <div class="label">Order complete</div>
+  <h1 class="display">Thank you, <em>truly</em></h1>
+  <p>{{ p.data.title }} is yours. Your template link and setup guide are below, and a copy is on its way to your inbox.</p>
+  <div class="box">
+    <div class="label">Step one</div>
+    <p style="margin:10px auto 18px">Open the link, sign in to Canva and press <i>Use template</i>. It creates your own copy to edit.</p>
+    <div class="acts">
+      {% if p.data.template_link %}<a class="btn solid" href="{{ p.data.template_link }}" target="_blank" rel="noopener">Open your template in Canva →</a>{% endif %}
+      {% if p.data.guide_pdf %}<a class="btn ghost" href="{{ p.data.guide_pdf }}" target="_blank" rel="noopener">Download the setup guide</a>{% endif %}
+    </div>
+  </div>
+  <p>Keep this page and the email — the link works whenever you need it. Something not right? Write to <a href="mailto:{{ settings.email }}">{{ settings.email }}</a>.</p>
+</div>

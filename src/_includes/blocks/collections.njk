@@ -1,0 +1,17 @@
+<section{% if block.anchor %} id="{{ block.anchor }}"{% endif %}>
+  <div class="wrap">
+    {% set center = true %}{% include "blocks/_head.njk" %}{% set center = false %}
+    <div class="collections">
+      {% for p in available %}
+      <a class="coll" href="{{ p.url }}">
+        <div class="frame{{ block.ratio | ratioClass }}"{{ block.ratio | ratio | safe }}><img src="{{ p.data.cover }}" alt="{{ p.data.collection }} collection" loading="lazy"></div>
+        <div class="meta"><h3>{{ p.data.collection }}</h3><span class="state on">Available</span></div>
+        <div class="meta">
+          <p>{{ p.data.tagline }}</p>
+          <div class="swatches">{% for c in p.data.swatches %}<i style="background:{{ c }}"></i>{% endfor %}</div>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>

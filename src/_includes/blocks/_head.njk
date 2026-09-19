@@ -1,0 +1,5 @@
+<div class="head{% if center %} center{% endif %}">
+  {% if block.eyebrow %}<div class="label">{{ block.eyebrow }}</div>{% endif %}
+  {% if block.title %}<h2 class="display">{{ block.title | accent | safe }}</h2>{% endif %}
+  {% if block.text %}<p>{{ block.text }}</p>{% endif %}
+</div>

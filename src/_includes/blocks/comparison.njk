@@ -1,0 +1,14 @@
+<section{% if block.anchor %} id="{{ block.anchor }}"{% endif %}>
+  <div class="wrap">
+    {% include "blocks/_head.njk" %}
+    <div class="cmp-wrap">
+      <table class="cmp">
+        <thead><tr><th></th><th class="us">{{ block.col_us }}</th><th>{{ block.col_a }}</th><th>{{ block.col_b }}</th></tr></thead>
+        <tbody>
+          {% for r in block.rows %}<tr><td>{{ r.label }}</td><td class="us">{{ r.us }}</td><td>{{ r.a }}</td><td>{{ r.b }}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>

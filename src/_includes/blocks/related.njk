@@ -1,0 +1,18 @@
+{%- set others = collections.products | whereNot("collection", product.data.collection if product else "") -%}
+{%- if others.length -%}
+<section>
+  <div class="wrap">
+    {% include "blocks/_head.njk" %}
+    <div class="related">
+      {% for p in others.slice(0,3) %}
+      <a href="{{ p.url }}">
+        <div class="frame{{ block.ratio | ratioClass }}" style="--ratio:{{ block.ratio if (block.ratio and block.ratio != 'original') else '4/3' }}"><img src="{{ p.data.cover }}" alt="{{ p.data.title }}" loading="lazy"></div>
+        <span class="label">{{ p.data.collection }}{% if p.data.status == "soon" %} · Coming soon{% endif %}</span>
+        <h4>{{ p.data.title }}</h4>
+        <span class="price">{{ p.data.price | euro }}</span>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{%- endif -%}

@@ -1,0 +1,6 @@
+{
+  "layout": "product.njk",
+  "permalink": "/templates/{{ page.fileSlug }}/",
+  "eleventyExcludeFromCollections": false,
+  "isProduct": true
+}

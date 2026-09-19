@@ -1,0 +1,34 @@
+{%- set p = product -%}
+{%- set imgs = [p.data.cover].concat(p.data.gallery or []) -%}
+<div class="wrap">
+  <div class="crumbs"><a href="/">Home</a> · <a href="/#templates">Templates</a> · {{ p.data.title }}</div>
+  <div class="pp">
+    <div class="pp-gallery">
+      <div class="frame{{ block.ratio | ratioClass }}"{{ block.ratio | ratio | safe }}><img id="pp-main" src="{{ imgs[0] }}" alt="{{ p.data.title }}"></div>
+      {% if imgs.length > 1 %}
+      <div class="thumbs">
+        {% for im in imgs %}<button type="button" data-src="{{ im }}"{% if loop.first %} aria-current="true"{% endif %} aria-label="Show image {{ loop.index }}"><img src="{{ im }}" alt="" loading="lazy"></button>{% endfor %}
+      </div>
+      <script>
+        document.querySelectorAll('.pp-gallery .thumbs button').forEach(function (b) {
+          b.addEventListener('click', function () {
+            document.getElementById('pp-main').src = b.dataset.src;
+            document.querySelectorAll('.pp-gallery .thumbs button').forEach(function (x) { x.removeAttribute('aria-current'); });
+            b.setAttribute('aria-current', 'true');
+          });
+        });
+      </script>
+      {% endif %}
+    </div>
+    <div class="pp-info">
+      <div class="label">{{ p.data.collection }} · {{ p.data.format }}</div>
+      <h1>{{ p.data.title }}</h1>
+      {% if p.data.summary %}<p class="desc">{{ p.data.summary }}</p>{% endif %}
+      {% if p.data.includes and p.data.includes.length %}<ul class="incl-list">{% for i in p.data.includes %}<li>{{ i }}</li>{% endfor %}</ul>{% endif %}
+      <div class="pricing"><span class="now">{{ p.data.price | euro }}</span></div>
+      <div class="acts">{% include "buy-button.njk" %}{% include "demo-button.njk" %}</div>
+      {% if p.data.status == "available" %}<p class="reassure">Delivered instantly · Yours to keep · A free Canva account is enough</p>{% endif %}
+      {% if p.data.swatches and p.data.swatches.length %}<div class="swatches" style="margin-top:20px">{% for c in p.data.swatches %}<i style="background:{{ c }}"></i>{% endfor %}</div>{% endif %}
+    </div>
+  </div>
+</div>

@@ -1,0 +1,62 @@
+<section{% if block.anchor %} id="{{ block.anchor }}"{% endif %}>
+  <div class="wrap">
+    {% include "blocks/_head.njk" %}
+
+    {% if featured %}{% set p = featured %}
+    <div class="feature">
+      <div class="visual"><a href="{{ p.url }}"><img src="{{ p.data.cover }}" alt="{{ p.data.title }}" loading="lazy"></a></div>
+      <div class="info">
+        <div class="label">{{ p.data.collection }} · {{ p.data.format }}</div>
+        <h3><a href="{{ p.url }}">{{ p.data.title }}</a></h3>
+        <p class="desc">{{ p.data.summary }}</p>
+        {% if p.data.includes.length %}<ul class="incl-list">{% for i in p.data.includes %}<li>{{ i }}</li>{% endfor %}</ul>{% endif %}
+        <div class="pricing"><span class="now">{{ p.data.price | euro }}</span></div>
+        <div class="acts">{% include "buy-button.njk" %}{% include "demo-button.njk" %}</div>
+        <p class="reassure">Delivered instantly · Yours to keep · A free Canva account is enough</p>
+      </div>
+    </div>
+    {% endif %}
+
+    {% set others = available | where("featured", false) %}
+    {% if others.length %}
+    <div class="duo">
+      {% for p in others %}
+      <article class="prod">
+        <a href="{{ p.url }}" class="frame{{ block.ratio_cards | ratioClass }}"{{ block.ratio_cards | ratio | safe }}><img src="{{ p.data.cover }}" alt="{{ p.data.title }}" loading="lazy"></a>
+        <div class="prod-body">
+          <div class="label">{{ p.data.collection }} · {{ p.data.format }}</div>
+          <h3><a href="{{ p.url }}">{{ p.data.title }}</a></h3>
+          <p>{{ p.data.summary }}</p>
+          <div class="pricing"><span class="now">{{ p.data.price | euro }}</span></div>
+          <div class="acts">{% include "buy-button.njk" %}{% include "demo-button.njk" %}</div>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if soon.length %}
+    <div class="upcoming-head">
+      <h3>{{ block.soon_title or "Opening next" }}</h3>
+      <span class="label">{{ block.soon_eyebrow }}</span>
+    </div>
+    <div class="products three">
+      {% for p in soon %}
+      <article class="card">
+        <div class="frame{{ block.ratio_soon | ratioClass }}"{{ block.ratio_soon | ratio | safe }}><img src="{{ p.data.cover }}" alt="{{ p.data.title }}" loading="lazy"></div>
+        <span class="kind">{{ p.data.collection }} · {{ p.data.format }}</span>
+        <h4>{{ p.data.title }}</h4>
+        <span class="price">{{ p.data.tagline }}</span>
+      </article>
+      {% endfor %}
+    </div>
+    <div class="next">
+      <div class="t">
+        <strong>Waiting for one of these?</strong>
+        <span>Tell me which, and I'll write the day it opens. One email, nothing else.</span>
+      </div>
+      <a href="mailto:{{ settings.email }}?subject={{ 'Tell me when a new collection opens' | urlencode }}" class="btn ghost sm">Let me know →</a>
+    </div>
+    {% endif %}
+  </div>
+</section>
